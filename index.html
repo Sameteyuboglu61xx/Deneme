@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samet Eyüboğlu //  Full-Stack Geliştirici</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -32,6 +33,7 @@
                 }
             }
         }
+    </script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
@@ -124,7 +126,7 @@
             </div>
 
             <!-- Mobile Menu Button -->
-            <button id="menu-btn" class="md:hidden text-cyan-400 text-2xl focus:outline-none">
+            <button id="menu-btn" type="button" aria-label="Menüyü aç/kapat" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden text-cyan-400 text-2xl focus:outline-none">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
@@ -167,10 +169,10 @@
                 </div>
 
                 <div class="flex items-center justify-center lg:justify-start space-x-6 pt-6 text-gray-400 text-lg">
-                    <a href="https://github.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://linkedin.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://twitter.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://discord.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-discord" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -552,7 +554,7 @@
                     </div>
                 </div>
 
-                <div id="terminal-body" class="p-6 font-mono text-sm h-80 overflow-y-auto space-y-3 bg-[#070810]/80">
+                <div id="terminal-body" role="log" aria-live="polite" class="p-6 font-mono text-sm h-80 overflow-y-auto space-y-3 bg-[#070810]/80">
                     <div class="text-gray-400">Samet'in Nöral Terminaline hoş geldiniz v3.5.0</div>
                     <div class="text-gray-400">Mevcut komutları görmek için <span class="text-cyan-400 font-bold">yardim</span> yazın.</div>
                     <div class="text-cyan-400 pt-2">$ sistem başarıyla başlatıldı.</div>
@@ -560,8 +562,8 @@
 
                 <div class="p-4 bg-[#0e0f21] border-t border-gray-800 flex items-center space-x-3">
                     <span class="text-cyan-400 font-mono font-bold">$</span>
-                    <input type="text" id="terminal-input" class="w-full bg-transparent text-white font-mono text-sm focus:outline-none placeholder-gray-600" placeholder="Komut yazın (örn. 'yardim')...">
-                    <button id="terminal-submit" class="px-4 py-2 rounded-lg bg-cyan-500 text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-cyan-400 transition-colors">Çalıştır</button>
+                    <input type="text" id="terminal-input" aria-label="Terminal komutu" autocomplete="off" spellcheck="false" class="w-full bg-transparent text-white font-mono text-sm focus:outline-none placeholder-gray-600" placeholder="Komut yazın (örn. 'yardim')...">
+                    <button type="button" id="terminal-submit" class="px-4 py-2 rounded-lg bg-cyan-500 text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-cyan-400 transition-colors">Çalıştır</button>
                 </div>
             </div>
         </div>
@@ -574,7 +576,7 @@
                     <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// İLETİŞİM KUR</span>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-white">GELECEĞİ BİRLİKTE İNŞA EDELİM.</h2>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        Çığır açan bir merkeziyetsiz projeniz, karmaşık web mimarisi zorluklarınız varsa veya sadece siber uzayda bağlantı kurmak istiyorsanız komşularım her zaman açık.
+                        Çığır açan bir merkeziyetsiz projeniz, karmaşık web mimarisi zorluklarınız varsa veya sadece siber uzayda bağlantı kurmak istiyorsanız iletişim kanallarım her zaman açık.
                     </p>
                     
                     <div class="space-y-4 font-mono text-sm pt-4">
@@ -605,21 +607,21 @@
                         <form id="contact-form" class="space-y-6" onsubmit="handleContactSubmit(event)">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="space-y-2">
-                                    <label class="block font-mono text-xs text-gray-300 uppercase">// ADINIZ</label>
-                                    <input type="text" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="örn. Leyla Ergin">
+                                    <label for="contact-name" class="block font-mono text-xs text-gray-300 uppercase">// ADINIZ</label>
+                                    <input type="text" id="contact-name" name="ad" autocomplete="name" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="örn. Leyla Ergin">
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="block font-mono text-xs text-gray-300 uppercase">// FREKANS (E-POSTA)</label>
-                                    <input type="email" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="leyla@nexus.com">
+                                    <label for="contact-email" class="block font-mono text-xs text-gray-300 uppercase">// FREKANS (E-POSTA)</label>
+                                    <input type="email" id="contact-email" name="eposta" autocomplete="email" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="leyla@nexus.com">
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <label class="block font-mono text-xs text-gray-300 uppercase">// İLETİŞİM KONUSU</label>
-                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Proje Teklifi / İş Birliği">
+                                <label for="contact-subject" class="block font-mono text-xs text-gray-300 uppercase">// İLETİŞİM KONUSU</label>
+                                <input type="text" id="contact-subject" name="konu" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Proje Teklifi / İş Birliği">
                             </div>
                             <div class="space-y-2">
-                                <label class="block font-mono text-xs text-gray-300 uppercase">// MESAJ VERİSİ</label>
-                                <textarea rows="5" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Mesaj payload içeriğini buraya yazın..."></textarea>
+                                <label for="contact-message" class="block font-mono text-xs text-gray-300 uppercase">// MESAJ VERİSİ</label>
+                                <textarea id="contact-message" name="mesaj" rows="5" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Mesaj payload içeriğini buraya yazın..."></textarea>
                             </div>
                             <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-mono font-bold text-sm uppercase tracking-wider shadow-neon hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-paper-plane"></i> Mesajı Gönder
@@ -660,7 +662,16 @@
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!isHidden));
+        });
+
+        // Mobil menüde bir bağlantı seçilince menüyü kapat
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
         });
 
         // Proje Filtreleme Mantığı
@@ -691,14 +702,24 @@
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
+        const heroSection = canvas.parentElement;
         const particles = [];
+
+        // Tuval pencereyi değil hero bölümünü izler; bölüm ekrandan uzun olduğunda da tamamını kaplar.
+        function resizeCanvas() {
+            const prevWidth = canvas.width;
+            const prevHeight = canvas.height;
+            canvas.width = heroSection.clientWidth;
+            canvas.height = heroSection.clientHeight;
+            if (prevWidth && prevHeight) {
+                particles.forEach(p => {
+                    p.x = (p.x / prevWidth) * canvas.width;
+                    p.y = (p.y / prevHeight) * canvas.height;
+                });
+            }
+        }
+        resizeCanvas();
+        new ResizeObserver(resizeCanvas).observe(heroSection);
         const particleCount = Math.min(window.innerWidth > 768 ? 70 : 35, 100);
 
         for (let i = 0; i < particleCount; i++) {
@@ -759,7 +780,7 @@
             projeler: "Nöral Ağ Simülatörü, Kuantum Defter Cüzdanı ve Aether AI projeleri için yukarıdaki projeler bölümüne göz atın.",
             iletisim: "E-posta: Samet.demir@matrix-core.net // Konum: Neo-Tokyo // Sektör 7",
             matrix: "Uyan, Neo... Matris senin peşinde. Beyaz tavşanı takip et. 🐇",
-            tarih: "Güncel Sistem Zamanı: " + new Date().toUTCString()
+            tarih: () => "Güncel Sistem Zamanı: " + new Date().toUTCString()
         };
 
         function processCommand() {
@@ -767,15 +788,19 @@
             if (!val) return;
 
             const userLine = document.createElement('div');
-            userLine.innerHTML = `<span class="text-cyan-400">$</span> ${val}`;
+            // Kullanıcı girdisi HTML olarak yorumlanmadan düz metin olarak eklenir
+            const promptSign = document.createElement('span');
+            promptSign.className = 'text-cyan-400';
+            promptSign.textContent = '$';
+            userLine.append(promptSign, ' ' + val);
             terminalBody.appendChild(userLine);
 
             if (val === 'temizle') {
                 terminalBody.innerHTML = '';
-            } else if (commands[val]) {
+            } else if (Object.prototype.hasOwnProperty.call(commands, val)) {
                 const resLine = document.createElement('div');
                 resLine.className = 'text-gray-300 pl-4 py-1';
-                resLine.innerText = commands[val];
+                resLine.textContent = typeof commands[val] === 'function' ? commands[val]() : commands[val];
                 terminalBody.appendChild(resLine);
             } else {
                 const errLine = document.createElement('div');
@@ -789,8 +814,8 @@
         }
 
         terminalSubmit.addEventListener('click', processCommand);
-        terminalInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') processCommand();
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.isComposing) processCommand();
         });
 
         // İletişim Formu Yönetimi
