@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samet Eyüboğlu //  Full-Stack Geliştirici</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#05050a',
+                            surface: '#0a0a16',
+                            card: '#121324',
+                            primary: '#00f0ff',
+                            secondary: '#7000ff',
+                            accent: '#ff0055',
+                            neonGreen: '#00ff66',
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['Fira Code', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(0, 240, 255, 0.3)',
+                        'neon-pink': '0 0 20px rgba(255, 0, 85, 0.3)',
+                        'neon-purple': '0 0 20px rgba(112, 0, 255, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #05050a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(18, 19, 36, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+        }
+
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.8), transparent);
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05050a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1b35;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="cyber-grid relative min-h-screen">
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-cyan-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-neon group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-terminal text-black font-bold text-lg"></i>
+                </div>
+                <span class="font-mono font-bold text-xl tracking-wider text-white">Samet<span class="text-cyan-400">.Eyüboğlu</span></span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 font-mono text-sm">
+                <a href="#hakkimda" class="text-gray-300 hover:text-cyan-400 transition-colors">// hakkımda</a>
+                <a href="#projeler" class="text-gray-300 hover:text-cyan-400 transition-colors">// projeler</a>
+                <a href="#yetenekler" class="text-gray-300 hover:text-cyan-400 transition-colors">// yetenekler</a>
+                <a href="#terminal" class="text-gray-300 hover:text-cyan-400 transition-colors">// terminal</a>
+                <a href="#iletisim" class="text-gray-300 hover:text-cyan-400 transition-colors">// iletişim</a>
+            </nav>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#iletisim" class="relative px-6 py-2.5 rounded-lg font-mono text-xs font-bold uppercase tracking-wider text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-neon transition-all duration-300">
+                    <span>Bağlantı Kur</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden text-cyan-400 text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-cyan-500/20 px-6 py-6 space-y-4 font-mono text-sm">
+            <a href="#hakkimda" class="block text-gray-300 hover:text-cyan-400">// hakkımda</a>
+            <a href="#projeler" class="block text-gray-300 hover:text-cyan-400">// projeler</a>
+            <a href="#yetenekler" class="block text-gray-300 hover:text-cyan-400">// yetenekler</a>
+            <a href="#terminal" class="block text-gray-300 hover:text-cyan-400">// terminal</a>
+            <a href="#iletisim" class="block text-gray-300 hover:text-cyan-400">// iletişim</a>
+        </div>
+    </header>
+
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden scanline">
+        <canvas id="hero-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full glass-panel border border-cyan-500/30 text-cyan-400 font-mono text-xs">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>SİSTEM ÇEVRİMİÇİ // DURUM: YENİ PROJELERE AÇIK</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-none">
+                    SİBERNETİK <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-glow">DENEYİMLER</span> İNŞA EDİYORUM.
+                </h1>
+
+                <p class="text-gray-400 text-base sm:text-lg max-w-2xl font-sans font-light">
+                    Neon matrisin derinliklerinde yüksek performanslı web uygulamaları, 3D WebGL arayüzleri ve ölçeklenebilir bulut altyapıları tasarlayan Full-Stack Geliştirici.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <a href="#projeler" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-mono font-bold text-sm tracking-wider uppercase shadow-neon hover:opacity-90 transition-opacity text-center">
+                        <i class="fa-solid fa-code mr-2"></i> Projeleri İncele
+                    </a>
+                    <a href="#terminal" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-cyan-400 font-mono font-bold text-sm tracking-wider uppercase border border-cyan-500/40 hover:bg-cyan-500/10 transition-colors text-center">
+                        <i class="fa-solid fa-terminal mr-2"></i> Terminali Aç
+                    </a>
+                </div>
+
+                <div class="flex items-center justify-center lg:justify-start space-x-6 pt-6 text-gray-400 text-lg">
+                    <a href="https://github.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://twitter.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://discord.com" target="_blank" class="hover:text-cyan-400 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                </div>
+            </div>
+
+            <!-- Hologram Code Card -->
+            <div class="lg:col-span-5 relative">
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                <div class="relative glass-panel rounded-2xl p-6 border border-cyan-500/30 shadow-2xl">
+                    <div class="flex items-center justify-between pb-4 border-b border-gray-800 font-mono text-xs text-gray-400">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                            <span class="ml-2 text-cyan-400">Samet@matrix-core:~</span>
+                        </div>
+                        <span class="text-purple-400 font-bold">v3.5.0</span>
+                    </div>
+                    <div class="py-6 font-mono text-sm space-y-3">
+                        <p class="text-gray-300"><span class="text-cyan-400">const</span> gelistirici = {</p>
+                        <p class="pl-4 text-gray-400">isim: <span class="text-green-400">"Samet Eyüboğlu"</span>,</p>
+                        <p class="pl-4 text-gray-400">unvan: <span class="text-green-400">"Kıdemli Sistem Mimarı"</span>,</p>
+                        <p class="pl-4 text-gray-400">anaYigin: [<span class="text-yellow-400">"React"</span>, <span class="text-yellow-400">"Node.js"</span>, <span class="text-yellow-400">"WebGL"</span>, <span class="text-yellow-400">"TypeScript"</span>],</p>
+                        <p class="pl-4 text-gray-400">durum: <span class="text-cyan-400">true</span>,</p>
+                        <p class="pl-4 text-gray-400">guvenlikSeviyesi: <span class="text-pink-500">"OMEGA_SEVIYE"</span></p>
+                        <p class="text-gray-300">};</p>
+                        <div class="pt-2 text-xs text-gray-500 flex items-center justify-between border-t border-gray-800/80 mt-4">
+                            <span>SÜREKLİLİK: %99.99</span>
+                            <span class="text-cyan-400 animate-pulse">_HAZIR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hakkimda" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// MİMARİ PROFİL</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">GELECEK İÇİN TASARLANDI</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-2xl border border-cyan-500/20 glass-panel-hover transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl mb-6">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-mono">Sistem Mimarisi</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Milyonlarca eşzamanlı isteği kaldırabilecek kapasitede, hata toleransına sahip mikroservisler ve yüksek hızlı arka uç sistemleri tasarlıyorum.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-purple-500/20 glass-panel-hover transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-mono">İnteraktif Arayüzler</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Tarayıcı sınırlarını zorlayan GLSL shader'lar, Three.js 3D ortamlar ve akıcı tepki veren modern arayüzler geliştiriyorum.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-pink-500/20 glass-panel-hover transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 text-2xl mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 font-mono">Güvenlik ve DevOps</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Sıfır güven (zero-trust) mimarileri, otomatik CI/CD hatları ve güvenli bulut dağıtımları ile projeleri koruma altına alıyorum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projeler" class="py-24 relative bg-cyber-surface/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// PORTFÖY ARŞİVİ</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">SEÇKİN PROJELER</h2>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0 font-mono text-xs">
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold transition-all" data-filter="all">TÜMÜ</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg glass-panel text-gray-300 hover:text-cyan-400 transition-all" data-filter="webgl">WEBGL / 3D</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg glass-panel text-gray-300 hover:text-cyan-400 transition-all" data-filter="fullstack">FULL-STACK</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg glass-panel text-gray-300 hover:text-cyan-400 transition-all" data-filter="ai">YAPAY ZEKA</button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-cyan-500/20 group hover:border-cyan-500/60 transition-all duration-300" data-category="webgl">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Neural Grid" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/00f0ff?text=Neural+Grid'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-cyan-400 font-mono text-xs border border-cyan-500/40">WebGL</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-cyan-400 transition-colors">Nöral Ağ Simülatörü</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Three.js ve özel GLSL shader'ları ile geliştirilmiş, sinaptik ateşlemeleri taklit eden interaktif 3D parçacık simülasyonu.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Three.js</span>
+                            <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">GLSL</span>
+                            <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">Vite</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-cyan-400 hover:text-cyan-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-purple-500/20 group hover:border-purple-500/60 transition-all duration-300" data-category="fullstack">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="Quantum Ledger" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/7000ff?text=Quantum+Ledger'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-purple-400 font-mono text-xs border border-purple-500/40">Full-Stack</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-purple-400 transition-colors">Kuantum Defter Cüzdanı</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Biyometrik kimlik doğrulama özellikli, istemci tarafında şifrelenen çoklu imzalı merkeziyetsiz kripto para cüzdanı.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">React</span>
+                            <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">Node.js</span>
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 border border-green-500/20">Solidity</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-purple-400 hover:text-purple-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-pink-500/20 group hover:border-pink-500/60 transition-all duration-300" data-category="ai">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" alt="Aether AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/ff0055?text=Aether+AI'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-pink-400 font-mono text-xs border border-pink-500/40">Yapay Zeka</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-pink-400 transition-colors">Aether AI Kod Asistanı</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Mikroservis güvenliği ve açık onarım yamaları konusunda eğitilmiş, yerel öncelikli yapay zeka kod ortağı.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Python</span>
+                            <span class="px-2 py-1 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20">PyTorch</span>
+                            <span class="px-2 py-1 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">FastAPI</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-pink-400 hover:text-pink-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-cyan-500/20 group hover:border-cyan-500/60 transition-all duration-300" data-category="webgl">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" alt="Cyber HUD" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/00f0ff?text=Neon+HUD'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-cyan-400 font-mono text-xs border border-cyan-500/40">WebGL</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-cyan-400 transition-colors">Neon HUD Arayüzü</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Fütüristik araç telemetrisi ve taktiksel HUD paneli göstergesi. Cyberpunk oyun arayüzleri için tasarlandı.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">HTML5 Canvas</span>
+                            <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">Tailwind</span>
+                            <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">WebSocket</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-cyan-400 hover:text-cyan-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-purple-500/20 group hover:border-purple-500/60 transition-all duration-300" data-category="fullstack">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="CyberStream" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/7000ff?text=CyberStream'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-purple-400 font-mono text-xs border border-purple-500/40">Full-Stack</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-purple-400 transition-colors">CyberStream P2P Video</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            WebRTC ve dağıtık hash tabloları kullanarak uçtan uca şifrelenmiş eşler arası video akış protokolü.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">WebRTC</span>
+                            <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">TypeScript</span>
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 border border-green-500/20">Go</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-purple-400 hover:text-purple-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card glass-panel rounded-2xl overflow-hidden border border-pink-500/20 group hover:border-pink-500/60 transition-all duration-300" data-category="ai">
+                    <div class="relative h-48 overflow-hidden bg-black/50">
+                        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&q=80" alt="Sentinel AI" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-75" onerror="this.src='https://placehold.co/800x400/0a0a16/ff0055?text=Sentinel+AI'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full glass-panel text-pink-400 font-mono text-xs border border-pink-500/40">Yapay Zeka</span>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono group-hover:text-pink-400 transition-colors">Sentinel Tehdit Radarı</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Denetimsiz makine öğrenimi modelleri kullanarak bulut sunucu loglarında anlık anomali tespit sistemi.
+                        </p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Python</span>
+                            <span class="px-2 py-1 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20">Scikit-Learn</span>
+                            <span class="px-2 py-1 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Kafka</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <a href="#" class="text-pink-400 hover:text-pink-300 font-mono text-xs font-bold flex items-center gap-1">KAYNAĞI GÖR <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white text-lg"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="yetenekler" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// TEKNOLOJİK CEPHANELİK</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">YETENEKLER VE UZMANLIK</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Skill Group 1 -->
+                <div class="glass-panel p-6 rounded-2xl border border-cyan-500/20 space-y-4">
+                    <div class="flex items-center space-x-3 text-cyan-400 font-mono font-bold text-lg">
+                        <i class="fa-solid fa-code"></i>
+                        <span>Ön Uç (Frontend)</span>
+                    </div>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>React / Next.js</span><span>%98</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 98%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>TypeScript</span><span>%95</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 95%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Tailwind CSS</span><span>%99</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 99%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Three.js / WebGL</span><span>%85</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 85%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Group 2 -->
+                <div class="glass-panel p-6 rounded-2xl border border-purple-500/20 space-y-4">
+                    <div class="flex items-center space-x-3 text-purple-400 font-mono font-bold text-lg">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Arka Uç (Backend)</span>
+                    </div>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Node.js / Express</span><span>%92</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 92%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Python / FastAPI</span><span>%90</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Go (Golang)</span><span>%82</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 82%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>GraphQL / REST</span><span>%94</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full rounded-full" style="width: 94%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Group 3 -->
+                <div class="glass-panel p-6 rounded-2xl border border-pink-500/20 space-y-4">
+                    <div class="flex items-center space-x-3 text-pink-400 font-mono font-bold text-lg">
+                        <i class="fa-solid fa-database"></i>
+                        <span>Veritabanları</span>
+                    </div>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>PostgreSQL</span><span>%90</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-pink-500 h-full rounded-full" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Redis / Önbellek</span><span>%88</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-pink-500 h-full rounded-full" style="width: 88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>MongoDB</span><span>%85</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-pink-500 h-full rounded-full" style="width: 85%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Vektör DBs</span><span>%80</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-pink-500 h-full rounded-full" style="width: 80%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Group 4 -->
+                <div class="glass-panel p-6 rounded-2xl border border-cyan-500/20 space-y-4">
+                    <div class="flex items-center space-x-3 text-cyan-400 font-mono font-bold text-lg">
+                        <i class="fa-solid fa-cloud"></i>
+                        <span>Bulut ve DevOps</span>
+                    </div>
+                    <div class="space-y-3 font-mono text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Docker / K8s</span><span>%88</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>AWS / Cloudflare</span><span>%86</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 86%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>CI/CD Hatları</span><span>%90</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 90%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1 text-gray-300"><span>Linux / Bash</span><span>%95</span></div>
+                            <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden"><div class="bg-cyan-400 h-full rounded-full" style="width: 95%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="terminal" class="py-24 relative bg-cyber-surface/50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// İNTERAKTİF KABUK</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">CANLI KOD TERMİNALİ</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+                <p class="text-gray-400 text-sm font-sans">Aşağıdaki alana komutlar yazabilirsiniz: <code class="text-cyan-400 font-mono">yardim</code>, <code class="text-cyan-400 font-mono">hakkimda</code>, <code class="text-cyan-400 font-mono">yetenekler</code>, <code class="text-cyan-400 font-mono">temizle</code>, veya <code class="text-cyan-400 font-mono">iletisim</code>.</p>
+            </div>
+
+            <!-- Terminal Box -->
+            <div class="glass-panel rounded-2xl border border-cyan-500/30 shadow-2xl overflow-hidden">
+                <div class="bg-[#0e0f21] px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        <span class="ml-4 font-mono text-xs text-gray-400">Samet@cyber-demir: ~ (bash)</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-xs font-mono text-cyan-400">
+                        <i class="fa-solid fa-signal"></i>
+                        <span>GÜVENLİ_OTURUM</span>
+                    </div>
+                </div>
+
+                <div id="terminal-body" class="p-6 font-mono text-sm h-80 overflow-y-auto space-y-3 bg-[#070810]/80">
+                    <div class="text-gray-400">Samet'in Nöral Terminaline hoş geldiniz v3.5.0</div>
+                    <div class="text-gray-400">Mevcut komutları görmek için <span class="text-cyan-400 font-bold">yardim</span> yazın.</div>
+                    <div class="text-cyan-400 pt-2">$ sistem başarıyla başlatıldı.</div>
+                </div>
+
+                <div class="p-4 bg-[#0e0f21] border-t border-gray-800 flex items-center space-x-3">
+                    <span class="text-cyan-400 font-mono font-bold">$</span>
+                    <input type="text" id="terminal-input" class="w-full bg-transparent text-white font-mono text-sm focus:outline-none placeholder-gray-600" placeholder="Komut yazın (örn. 'yardim')...">
+                    <button id="terminal-submit" class="px-4 py-2 rounded-lg bg-cyan-500 text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-cyan-400 transition-colors">Çalıştır</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="iletisim" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="font-mono text-cyan-400 text-xs tracking-widest uppercase">// İLETİŞİM KUR</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">GELECEĞİ BİRLİKTE İNŞA EDELİM.</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Çığır açan bir merkeziyetsiz projeniz, karmaşık web mimarisi zorluklarınız varsa veya sadece siber uzayda bağlantı kurmak istiyorsanız komşularım her zaman açık.
+                    </p>
+                    
+                    <div class="space-y-4 font-mono text-sm pt-4">
+                        <div class="flex items-center space-x-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-cyan-400 border border-cyan-500/30">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span>Samet.demir@matrix-core.net</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-purple-400 border border-purple-500/30">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span>Neo-Tokyo // Sektör 7 (Uzaktan)</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-pink-400 border border-pink-500/30">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                            </div>
+                            <span>ŞİFRELİ_PGP_ANAHTARI_AKTİF</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel p-8 rounded-2xl border border-cyan-500/30 shadow-2xl relative">
+                        <form id="contact-form" class="space-y-6" onsubmit="handleContactSubmit(event)">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="block font-mono text-xs text-gray-300 uppercase">// ADINIZ</label>
+                                    <input type="text" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="örn. Leyla Ergin">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block font-mono text-xs text-gray-300 uppercase">// FREKANS (E-POSTA)</label>
+                                    <input type="email" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="leyla@nexus.com">
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-gray-300 uppercase">// İLETİŞİM KONUSU</label>
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Proje Teklifi / İş Birliği">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-gray-300 uppercase">// MESAJ VERİSİ</label>
+                                <textarea rows="5" required class="w-full px-4 py-3 rounded-xl bg-black/40 border border-gray-800 text-white font-mono text-sm focus:outline-none focus:border-cyan-400 transition-colors" placeholder="Mesaj payload içeriğini buraya yazın..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-mono font-bold text-sm uppercase tracking-wider shadow-neon hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Mesajı Gönder
+                            </button>
+                        </form>
+                        <!-- Success Notification Box -->
+                        <div id="form-success" class="hidden absolute inset-0 glass-panel bg-[#05050a]/95 rounded-2xl flex flex-col items-center justify-center p-8 text-center space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-cyan-500/20 border border-cyan-500 text-cyan-400 flex items-center justify-center text-3xl animate-bounce">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white font-mono">İLETİŞİM BAŞARILI</h3>
+                            <p class="text-gray-400 text-sm max-w-md">Payload veriniz Samet'in terminaline güvenli bir şekilde ulaştı. En kısa sürede dönüş yapılacaktır.</p>
+                            <button onclick="resetContactForm()" class="px-6 py-2.5 rounded-lg bg-cyan-500 text-black font-mono text-xs font-bold uppercase tracking-wider">Yeni Mesaj Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-gray-800/80 glass-panel">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-gray-400">
+            <div class="flex items-center space-x-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                <span>© 2026 Samet Eyüboğlu. TÜM HAKLARI SAKLIDIR.</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="#hakkimda" class="hover:text-cyan-400 transition-colors">Gizlilik Politikası</a>
+                <a href="#hakkimda" class="hover:text-cyan-400 transition-colors">Matris Şartları</a>
+                <a href="#terminal" class="hover:text-cyan-400 transition-colors">API Durumu</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        // Mobil Menü Aç/Kapat
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Proje Filtreleme Mantığı
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-cyan-500', 'text-black', 'font-bold');
+                    b.classList.add('glass-panel', 'text-gray-300');
+                });
+                btn.classList.remove('glass-panel', 'text-gray-300');
+                btn.classList.add('bg-cyan-500', 'text-black', 'font-bold');
+
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // İnteraktif Hero Canvas Parçacıkları
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        const particleCount = Math.min(window.innerWidth > 768 ? 70 : 35, 100);
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 1.2,
+                vy: (Math.random() - 0.5) * 1.2,
+                radius: Math.random() * 2 + 1,
+                color: Math.random() > 0.5 ? '#00f0ff' : '#7000ff'
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                ctx.fill();
+
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // İnteraktif Terminal Komutları
+        const terminalBody = document.getElementById('terminal-body');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalSubmit = document.getElementById('terminal-submit');
+
+        const commands = {
+            yardim: "Kullanılabilir komutlar: hakkimda, yetenekler, projeler, iletisim, temizle, matrix, tarih",
+            hakkimda: "Samet Eyüboğlu: Kıdemli Sistem Mimarı, WebGL yaratıcısı ve merkeziyetsiz sistem tasarımcısı.",
+            yetenekler: "Ön Uç: React, TS, Three.js | Arka Uç: Node, Python, Go | Bulut: Docker, K8s, AWS",
+            projeler: "Nöral Ağ Simülatörü, Kuantum Defter Cüzdanı ve Aether AI projeleri için yukarıdaki projeler bölümüne göz atın.",
+            iletisim: "E-posta: Samet.demir@matrix-core.net // Konum: Neo-Tokyo // Sektör 7",
+            matrix: "Uyan, Neo... Matris senin peşinde. Beyaz tavşanı takip et. 🐇",
+            tarih: "Güncel Sistem Zamanı: " + new Date().toUTCString()
+        };
+
+        function processCommand() {
+            const val = terminalInput.value.trim().toLowerCase();
+            if (!val) return;
+
+            const userLine = document.createElement('div');
+            userLine.innerHTML = `<span class="text-cyan-400">$</span> ${val}`;
+            terminalBody.appendChild(userLine);
+
+            if (val === 'temizle') {
+                terminalBody.innerHTML = '';
+            } else if (commands[val]) {
+                const resLine = document.createElement('div');
+                resLine.className = 'text-gray-300 pl-4 py-1';
+                resLine.innerText = commands[val];
+                terminalBody.appendChild(resLine);
+            } else {
+                const errLine = document.createElement('div');
+                errLine.className = 'text-pink-500 pl-4 py-1';
+                errLine.innerText = `Komut tanınamadı: '${val}'. Kullanılabilir komutlar için 'yardim' yazın.`;
+                terminalBody.appendChild(errLine);
+            }
+
+            terminalInput.value = '';
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        terminalSubmit.addEventListener('click', processCommand);
+        terminalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processCommand();
+        });
+
+        // İletişim Formu Yönetimi
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const successBox = document.getElementById('form-success');
+            successBox.classList.remove('hidden');
+        }
+
+        function resetContactForm() {
+            const successBox = document.getElementById('form-success');
+            successBox.classList.add('hidden');
+            document.getElementById('contact-form').reset();
+        }
+    </script>
+</body>
+</html>
